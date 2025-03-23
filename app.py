@@ -5,7 +5,7 @@
 
 
 import streamlit as st
-import fitz  # PyMuPDF for PDF extraction
+import fitz  
 import os
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
