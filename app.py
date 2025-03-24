@@ -1,11 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import streamlit as st
-import fitz  
+from PyPDF2 import PdfReader
 import os
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -13,8 +7,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 # Function to extract text from PDFs
 def extract_text_from_pdf(pdf_file):
-    doc = fitz.open(pdf_file)
-    text = "\n".join([page.get_text("text") for page in doc])
+    pdf = PdfReader(pdf_file)
+    text = ""
+    for page in pdf.pages:
+        text += page.extract_text() or ""
     return text
 
 # Function to rank resumes based on job description
@@ -52,4 +48,3 @@ if st.button("Process Resumes") and job_desc and uploaded_files:
     # Displaying Results
     st.subheader("Ranking Resumes")
     st.table({"Resume": [r[0] for r in ranked_resumes], "Score": [round(r[1], 3) for r in ranked_resumes]})
-
